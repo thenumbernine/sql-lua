@@ -135,13 +135,11 @@ print('got old fields ', table.keys(oldFields):concat', ')
 			if not next(oldFields) then
 				error('somehow there are no table columns to migrate')
 			end
-			assert(echo('insert into '..tmp.name
-				..' select '
-				..tmp.fields
-					:mapi(function(field) return field.name end)
-					:filter(function(fieldName) return oldFields[fieldName] end)	-- filter out fields missing from the original table
-					:concat', '
-				..' from '..t.name..';'))
+			local fieldstr = tmp.fields
+				:mapi(function(field) return field.name end)
+				:filter(function(fieldName) return oldFields[fieldName] end)	-- filter out fields missing from the original table
+				:concat', '
+			assert(echo('insert into '..tmp.name..' ('..fieldstr..') select '..fieldstr..' from '..t.name..';'))
 		end
 		--]]
 	end
