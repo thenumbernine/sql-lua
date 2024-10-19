@@ -1,6 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local assertindex = require 'ext.assert'.index
+local assert = require 'ext.assert'
 local os = require 'ext.os'
 local template = require 'template'
 local SQLTable = require 'sql.table'
@@ -16,10 +16,10 @@ args:
 	tables = table of SQLTable's
 --]]
 function SQLSite:init(args)
-	self.dbname = assertindex(args, 'dbname')
-	self.username = assertindex(args, 'username')
-	self.password = assertindex(args, 'password')
-	self.tables = table.mapi(assertindex(args, 'tables'), function(t)
+	self.dbname = assert.index(args, 'dbname')
+	self.username = assert.index(args, 'username')
+	self.password = assert.index(args, 'password')
+	self.tables = table.mapi(assert.index(args, 'tables'), function(t)
 		assert(SQLTable:isa(t))
 		return t
 	end)
@@ -59,7 +59,7 @@ function SQLSite:rebuildTables(args)
 	local dbname = self.dbname
 	-- user can't create tables so ...
 	local user = 'root'	-- self.username
-	local pass =  assertindex(args, 'rootpassword')
+	local pass =  assert.index(args, 'rootpassword')
 
 	-- in luasql I have to connect to at least one database at all times? weird.
 	local conn = assert(env:connect(dbname, user, pass))

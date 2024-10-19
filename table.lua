@@ -1,6 +1,6 @@
 local table = require 'ext.table'
 local class = require 'ext.class'
-local assertindex = require 'ext.assert'.index
+local assert = require 'ext.assert'
 local SQLField = require 'sql.field'
 
 local SQLTable = class()
@@ -47,7 +47,7 @@ function SQLTable:insertcmd(obj)
 	local values = table()
 	for k,v in pairs(obj) do
 		keys:insert(k)
-		local field = assertindex(self.fields, k, "tried to insert a column that isn't in the table")
+		local field = assert.index(self.fields, k, "tried to insert a column that isn't in the table")
 		values:insert((field:serializeValue(v)))
 	end
 	return 'insert into '..self.name
